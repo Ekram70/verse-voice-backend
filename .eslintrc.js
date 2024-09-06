@@ -3,7 +3,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: 'airbnb-base',
+  extends: ['airbnb-base', 'plugin:import/recommended'],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -54,5 +54,7 @@ module.exports = {
     'object-shorthand': 'off',
     'prefer-const': 'error',
     'prefer-template': 'warn',
+    // import
+    'import/no-unresolved': ['error', { module: true }],
   },
 };

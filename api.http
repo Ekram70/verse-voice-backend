@@ -1,0 +1,23 @@
+GET http://localhost:8000/
+
+###
+GET http://localhost:8000/notfound
+
+###
+POST http://localhost:8000/api/v1/register
+Content-Type: application/json
+
+{
+    "name": "ekram",
+    "email": "ekramullah69@gmail.com",
+    "password": "Coc@104035"
+}
+
+###
+POST http://localhost:8000/api/v1/auth
+Content-Type: application/json
+
+{
+    "email": "ekramullah69@gmail.com",
+    "password": "Coc@104035"
+}
