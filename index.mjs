@@ -14,8 +14,7 @@ import limiter from './config/limiter.mjs';
 
 // custom middlewares
 import credentials from './middlewares/credentials.mjs';
-import errorHandler from './middlewares/errorHandler.mjs';
-import { logAccessToFile, logToConsole } from './middlewares/logger.mjs';
+import { logToConsole } from './middlewares/logger.mjs';
 
 // routers
 import authRouter from './routes/authRoutes.mjs';
@@ -45,7 +44,6 @@ const PORT = 8000;
 await connectDB();
 
 // logger
-app.use(logAccessToFile);
 app.use(logToConsole);
 
 // routers
@@ -62,6 +60,8 @@ app.all('*', (_, res) => {
 });
 
 // error handling middleware
-app.use(errorHandler);
+app.use((err, req, res, next) => {
+  res.status(500).send(err.message);
+});
 
 app.listen(PORT, () => console.log(`Server is listening at port ${PORT}`));
