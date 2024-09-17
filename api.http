@@ -21,3 +21,19 @@ Content-Type: application/json
     "email": "ekramullah69@gmail.com",
     "password": "Coc@104035"
 }
+
+###
+GET http://localhost:8000/api/v1/reset/verifyEmail/ekramullah69@gmail.com
+
+###
+GET http://localhost:8000/api/v1/reset/verifyOTP/ekramullah69@gmail.com/630993
+
+###
+POST http://localhost:8000/api/v1/reset/resetPass
+Content-Type: application/json
+
+{
+    "email": "ekramullah69@gmail.com",
+    "otp": "630993",
+    "password": "123456789"
+}

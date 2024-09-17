@@ -19,6 +19,7 @@ import { logToConsole } from './middlewares/logger.mjs';
 // routers
 import authRouter from './routes/authRoutes.mjs';
 import registerRouter from './routes/registerRoutes.mjs';
+import resetRouter from './routes/resetRoutes.mjs';
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use(logToConsole);
 // routers
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/register', registerRouter);
+app.use('/api/v1/reset', resetRouter);
 
 app.get('/', (req, res) => {
   res.json({ text: 'hellow world' });
