@@ -17,7 +17,7 @@ const verifyEmail = async (req, res) => {
       let createOtp = await otpModel.create({ email: email, otp: OtpCode });
       let sendEmail = await sendEmailUtility(
         email,
-        `Your OTP code is ${OtpCode}`,
+        `${htmlEmail(OtpCode)}`,
         'Classroom Writers OTP Verification'
       );
 

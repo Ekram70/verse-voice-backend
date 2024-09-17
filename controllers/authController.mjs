@@ -8,7 +8,7 @@ const login = async (req, res) => {
     const foundUser = await usersModel.findOne({ email }).exec();
 
     if (!foundUser) {
-      return res.sendStatus(401);
+      return res.status(401).json({ status: 'fail' });
     }
 
     const match = await bcrypt.compare(password, foundUser.password);
