@@ -21,39 +21,16 @@ const login = async (req, res) => {
       };
 
       let accessToken = '';
-      let refreshToken = '';
 
       if (rememberMe) {
         accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-          expiresIn: '3h',
-        });
-        refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
           expiresIn: '7d',
         });
       } else {
         accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-          expiresIn: '30m',
-        });
-        refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
           expiresIn: '1d',
         });
       }
-
-      await usersModel.updateOne(
-        { _id: foundUser._id },
-        {
-          $set: {
-            refreshToken,
-          },
-        }
-      );
-
-      res.cookie('jwt', refreshToken, {
-        httpOnly: true,
-        sameSite: 'None',
-        secure: true,
-        maxAge: rememberMe ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
-      });
 
       res.status(200).json({
         status: 'success',

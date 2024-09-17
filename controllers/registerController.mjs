@@ -9,7 +9,8 @@ const registration = async (req, res) => {
     const duplicate = await usersModel.findOne({ email }).exec();
 
     if (duplicate) {
-      return res.sendStatus(409);
+      return res.status(409).json({ status: 'fail' });
+
     }
 
     const hashedPass = await bcrypt.hash(password, 7);
@@ -23,27 +24,7 @@ const registration = async (req, res) => {
     };
 
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '30m',
-    });
-
-    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
       expiresIn: '1d',
-    });
-
-    await usersModel.updateOne(
-      { _id: user._id },
-      {
-        $set: {
-          refreshToken,
-        },
-      }
-    );
-
-    res.cookie('jwt', refreshToken, {
-      httpOnly: true,
-      sameSite: 'None',
-      secure: true,
-      maxAge: 2 * 24 * 60 * 60 * 1000,
     });
 
     res.status(201).json({

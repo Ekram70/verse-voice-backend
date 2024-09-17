@@ -31,7 +31,6 @@ const userSchema = new mongoose.Schema(
         'not a valid password',
       ],
     },
-    refreshToken: String,
   },
   {
     timestamps: true,
