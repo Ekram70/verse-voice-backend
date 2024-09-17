@@ -16,7 +16,9 @@ import credentials from './middlewares/credentials.mjs';
 import { logToConsole } from './middlewares/logger.mjs';
 
 // routers
+import authenticateToken from './middlewares/verifyToken.mjs';
 import authRouter from './routes/authRoutes.mjs';
+import logoutRouter from './routes/logoutRoutes.mjs';
 import registerRouter from './routes/registerRoutes.mjs';
 import resetRouter from './routes/resetRoutes.mjs';
 
@@ -49,6 +51,7 @@ app.use(logToConsole);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/register', registerRouter);
 app.use('/api/v1/reset', resetRouter);
+app.use('/api/v1/logout', authenticateToken, logoutRouter);
 
 app.get('/', (req, res) => {
   res.json({ text: 'hellow world' });
