@@ -46,12 +46,7 @@ const validateRegister = [
     .withMessage('password should not be empty')
     .bail()
     .isLength({ min: 8, max: 24 })
-    .withMessage('passowrd must be between 8 to 24 characters')
-    .bail()
-    .isStrongPassword()
-    .withMessage(
-      'password should contain one lowercase, one uppercase, one digits and one special characters'
-    ),
+    .withMessage('passowrd must be between 8 to 24 characters'),
 ];
 
 export default validateRegister;
