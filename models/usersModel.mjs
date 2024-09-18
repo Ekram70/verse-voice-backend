@@ -5,39 +5,38 @@ const userSchema = new mongoose.Schema(
     avatar: { type: String, default: '' },
     name: {
       type: String,
-      required: [true, 'name is required'],
+      required: [true, 'Name is required'],
       trim: true,
-      minLength: [3, 'name must be at least 3 characters'],
-      maxLength: [24, 'name must be maximum 24 characters'],
-      match: [/^[a-zA-Z\s]*$/g, 'only letters and spacess allowed'],
+      minLength: [3, 'Name must be at least 3 characters'],
+      maxLength: [24, 'Name must be maximum 24 characters'],
+      match: [/^[a-zA-Z\s]*$/, 'Only letters and spaces allowed'],
     },
     email: {
       type: String,
-      required: [true, 'email is required'],
-      unique: [true, 'this email is already assossiated with another account'],
+      required: [true, 'Email is required'],
+      unique: [true, 'This email is already associated with another account'],
       trim: true,
-      lowerCase: true,
+      lowercase: true,
       match: [
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        'not a valid email address',
+        'Not a valid email address',
       ],
     },
     password: {
       type: String,
-      required: [true, 'password is required'],
-      minLength: [8, 'password should be at least 8 characters'],
+      required: [true, 'Password is required'],
+      minLength: [8, 'Password should be at least 8 characters'],
       match: [
         /^(?=.*[A-Z])(?=.*[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$/,
-        'not a valid password',
+        'Not a valid password',
       ],
     },
+    blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }], // Optional: tracking user's blogs
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }], // Optional: tracking user's comments
   },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
+  { timestamps: true, versionKey: false }
 );
 
-const usersModel = mongoose.model('users', userSchema);
+const User = mongoose.model('User', userSchema);
 
-export default usersModel;
+export default User;
