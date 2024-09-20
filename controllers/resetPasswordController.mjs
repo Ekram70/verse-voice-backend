@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import otpModel from '../models/otpModel.mjs';
 import usersModel from '../models/usersModel.mjs';
 
@@ -27,6 +28,8 @@ const resetPassword = async (req, res) => {
       res.status(200).json({ status: 'fail', data: 'Invalid OTP' });
     }
   } catch (error) {
+    console.log(error);
+
     res.status(200).json({ status: 'fail', data: error });
   }
 };
