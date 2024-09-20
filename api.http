@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/api/v1/reset/verifyEmail/ekramullah69@gmail.com
+GET http://localhost:8000/api/v1/reset/verifyEmail/rizwanshuvo@gmail.com
 
 ###
 GET http://localhost:8000/api/v1/reset/verifyOTP/ekramullah69@gmail.com/630993

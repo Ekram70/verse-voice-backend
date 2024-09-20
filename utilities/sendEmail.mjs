@@ -15,7 +15,7 @@ const sendEmailUtility = async (EmailTo, EmailText, EmailSub) => {
     from: `Classroom Writers <${process.env.FROM_EMAIL}>`,
     to: EmailTo,
     subject: EmailSub,
-    text: EmailText,
+    html: EmailText,
   };
 
   return await transporter.sendMail(mailOptions);

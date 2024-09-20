@@ -25,3 +25,5 @@ const verifyOtp = async (req, res) => {
 };
 
 export default verifyOtp;
+
+// improve this code

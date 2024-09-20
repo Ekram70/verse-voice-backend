@@ -1,5 +1,6 @@
 import otpModel from '../models/otpModel.mjs';
 import usersModel from '../models/usersModel.mjs';
+import htmlEmail from '../utilities/htmlEmail.mjs';
 import sendEmailUtility from '../utilities/sendEmail.mjs';
 
 const verifyEmail = async (req, res) => {
@@ -26,6 +27,8 @@ const verifyEmail = async (req, res) => {
       res.status(200).json({ status: 'fail', data: 'No user found' });
     }
   } catch (error) {
+    console.log(error);
+
     res.status(200).json({ status: 'fail', data: error });
   }
 };
