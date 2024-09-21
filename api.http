@@ -23,17 +23,17 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/api/v1/reset/verifyEmail/ekramullah69@gmail.com
+GET http://localhost:8000/api/v1/reset/verifyEmail/rizwanshuvo@gmail.com
 
 ###
-GET http://localhost:8000/api/v1/reset/verifyOTP/ekramullah69@gmail.com/419460
+GET http://localhost:8000/api/v1/reset/verifyOTP/rizwanshuvo@gmail.com/856385
 
 ###
 POST http://localhost:8000/api/v1/reset/resetPass
 Content-Type: application/json
 
 {
-    "email": "ekramullah69@gmail.com",
-    "otp": "419460",
+    "email": "rizwanshuvo@gmail.com",
+    "otp": "856385",
     "password": "12345678"
 }

@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import otpModel from '../models/otpModel.mjs';
 import usersModel from '../models/usersModel.mjs';
 
