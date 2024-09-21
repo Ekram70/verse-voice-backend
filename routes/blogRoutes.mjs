@@ -6,6 +6,7 @@ import getBlogs from '../controllers/getAllBlogsController.mjs';
 import getBlogById from '../controllers/getSingleBlogController.mjs';
 import updateBlog from '../controllers/updateBlogController.mjs';
 import handleUpload from '../middlewares/handleUpload.mjs';
+import isSuperUserMiddleware from '../middlewares/isSuperUser.mjs';
 import authenticateToken from '../middlewares/verifyToken.mjs';
 import upload from '../utilities/uploadFile.mjs';
 
@@ -14,7 +15,13 @@ const router = express.Router();
 router
   .route('/')
   .get(getBlogs)
-  .post(authenticateToken, upload.single('image'), handleUpload, createBlog);
+  .post(
+    authenticateToken,
+    isSuperUserMiddleware,
+    upload.fields([{ name: 'blogImage' }, { name: 'authorImage' }]),
+    handleUpload,
+    createBlog
+  );
 
 router
   .route('/:id')

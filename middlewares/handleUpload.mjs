@@ -1,7 +1,9 @@
 const handleUpload = (req, res, next) => {
   const url = req.protocol + '://' + req.get('host');
-  profileImg = url + '/' + req.file.filename;
-  req.body.blogPicUrl = profileImg;
+  blogImg = url + '/' + req.files['blogImage'][0].filename;
+  authorImg = url + '/' + req.files['authorImage'][0].filename;
+  req.body.blogPicUrl = blogImg;
+  req.body.authorImage = authorImg;
   next();
 };
 

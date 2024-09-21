@@ -1,7 +1,15 @@
 import Blog from '../models/blogsModel.mjs';
 
 const createBlog = async (req, res) => {
-  const { category, isFeatured, title, content, blogPicUrl } = req.body;
+  const {
+    category,
+    isFeatured,
+    title,
+    content,
+    blogPicUrl,
+    name,
+    authorImage,
+  } = req.body;
 
   const blog = new Blog({
     category,
@@ -9,7 +17,10 @@ const createBlog = async (req, res) => {
     title,
     content,
     blogPicUrl,
-    createdBy: req.user,
+    createdBy: {
+      name,
+      avatar: authorImage,
+    },
   });
 
   try {
