@@ -49,8 +49,7 @@ await connectDB();
 // logger
 app.use(logToConsole);
 
-const publicDirectoryPath = path.join(__dirname, 'public');
-app.use(express.static(publicDirectoryPath));
+app.use(express.static('./public'));
 
 // routers
 app.use('/api/v1/auth', authRouter);
