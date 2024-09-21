@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import BlacklistedToken from '../models/blacklistedTokenModel.mjs';
 
 const logout = async (req, res) => {

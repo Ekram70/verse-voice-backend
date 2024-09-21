@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import BlacklistedToken from '../models/blacklistedTokenModel.mjs';
 
 async function authenticateToken(req, res, next) {
@@ -10,7 +11,7 @@ async function authenticateToken(req, res, next) {
     const blacklisted = await BlacklistedToken.findOne({ token });
     if (blacklisted) return res.sendStatus(403);
 
-    jwt.verify(token, secret, (err, user) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
       if (err) return res.status(403).json({ status: 'fail' });
       req.user = user;
       next();
