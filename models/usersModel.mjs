@@ -31,8 +31,9 @@ const userSchema = new mongoose.Schema(
         'Not a valid password',
       ],
     },
-    blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }], // Optional: tracking user's blogs
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }], // Optional: tracking user's comments
+    blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+    isSuperUser: { type: Boolean, default: false },
   },
   { timestamps: true, versionKey: false }
 );
