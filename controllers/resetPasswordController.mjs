@@ -21,9 +21,21 @@ const resetPassword = async (req, res) => {
         }
       );
 
-      res
-        .status(200)
-        .json({ status: 'success', data: 'Password Updated Successfully' });
+      const foundUser = await usersModel.findOne({ email }).exec();
+
+      const payload = {
+        id: foundUser._id,
+        name: foundUser.name,
+        email: foundUser.email,
+      };
+
+      let accessToken = '';
+
+      accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '1d',
+      });
+
+      res.status(200).json({ status: 'success', accessToken });
     } else {
       res.status(200).json({ status: 'fail', data: 'Invalid OTP' });
     }
