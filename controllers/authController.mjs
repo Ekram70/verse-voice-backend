@@ -35,8 +35,10 @@ const login = async (req, res) => {
 
       res.status(200).json({
         status: 'success',
-        accessToken,
-        user: payload,
+        data: {
+          accessToken,
+          user: payload,
+        },
       });
     } else {
       res.sendStatus(401);

@@ -29,8 +29,10 @@ const registration = async (req, res) => {
 
     res.status(201).json({
       status: 'success',
-      accessToken,
-      user: payload,
+      data: {
+        accessToken,
+        user: payload,
+      },
     });
   } catch (error) {
     res.status(500).json({ status: 'fail', data: error.message });
