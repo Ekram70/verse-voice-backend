@@ -28,6 +28,7 @@ const resetPassword = async (req, res) => {
         id: foundUser._id,
         name: foundUser.name,
         email: foundUser.email,
+        admin: foundUser.isSuperUser,
       };
 
       let accessToken = '';
@@ -36,7 +37,7 @@ const resetPassword = async (req, res) => {
         expiresIn: '1d',
       });
 
-      res.status(200).json({ status: 'success', accessToken });
+      res.status(200).json({ status: 'success', accessToken, user: payload });
     } else {
       res.status(200).json({ status: 'fail', data: 'Invalid OTP' });
     }

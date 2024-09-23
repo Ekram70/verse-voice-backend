@@ -18,6 +18,7 @@ const login = async (req, res) => {
         id: foundUser._id,
         name: foundUser.name,
         email: foundUser.email,
+        admin: foundUser.isSuperUser,
       };
 
       let accessToken = '';
@@ -35,6 +36,7 @@ const login = async (req, res) => {
       res.status(200).json({
         status: 'success',
         accessToken,
+        user: payload,
       });
     } else {
       res.sendStatus(401);

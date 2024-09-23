@@ -10,7 +10,6 @@ const registration = async (req, res) => {
 
     if (duplicate) {
       return res.status(409).json({ status: 'fail' });
-
     }
 
     const hashedPass = await bcrypt.hash(password, 7);
@@ -21,6 +20,7 @@ const registration = async (req, res) => {
       id: user._id,
       name: user.name,
       email: user.email,
+      admin: user.isSuperUser,
     };
 
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
@@ -30,6 +30,7 @@ const registration = async (req, res) => {
     res.status(201).json({
       status: 'success',
       accessToken,
+      user: payload,
     });
   } catch (error) {
     res.status(500).json({ status: 'fail', data: error.message });
