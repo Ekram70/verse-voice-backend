@@ -50,6 +50,18 @@ export const getMyRequests = async (req, res) => {
   }
 };
 
+// Admin gets a single request by ID
+export const getRequestById = async (req, res) => {
+  try {
+    const request = await BlogRequest.findById(req.params.id)
+      .populate('submittedBy', 'name email');
+    if (!request) return res.status(404).json({ message: 'Request not found' });
+    res.json(request);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Admin approves a request -> creates a blog from it
 export const approveRequest = async (req, res) => {
   try {
