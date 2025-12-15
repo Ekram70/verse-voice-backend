@@ -23,7 +23,13 @@ if (isServerless) {
         folder: 'versevoice',
         allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
         resource_type: 'image',
-        transformation: isSvg ? [] : [{ width: 1200, height: 800, crop: 'limit' }],
+        transformation: isSvg ? [] : [{
+          width: 1200,
+          height: 1200,
+          crop: 'limit',
+          quality: 90,
+          fetch_format: 'auto'
+        }],
       };
     },
   });
