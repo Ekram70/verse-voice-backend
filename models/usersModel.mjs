@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema(
     blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     isSuperUser: { type: Boolean, default: false },
+    isBanned: { type: Boolean, default: false },
   },
   { timestamps: true, versionKey: false }
 );

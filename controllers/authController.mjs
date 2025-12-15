@@ -14,6 +14,10 @@ const login = async (req, res) => {
     const match = await bcrypt.compare(password, foundUser.password);
 
     if (match) {
+      if (foundUser.isBanned) {
+        return res.status(403).json({ status: 'fail', message: 'Your account has been banned' });
+      }
+
       const payload = {
         id: foundUser._id,
         name: foundUser.name,
