@@ -29,3 +29,13 @@ export const getSubscribers = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const deleteSubscriber = async (req, res) => {
+  try {
+    const subscriber = await Newsletter.findByIdAndDelete(req.params.id);
+    if (!subscriber) return res.status(404).json({ message: 'Subscriber not found' });
+    res.json({ message: 'Subscriber deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
