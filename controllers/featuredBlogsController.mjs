@@ -52,6 +52,13 @@ export const toggleFeatured = async (req, res) => {
     const blog = await Blog.findById(req.params.id);
     if (!blog) return res.status(404).json({ message: 'Blog not found' });
 
+    if (!blog.isFeatured) {
+      const count = await Blog.countDocuments({ isFeatured: true });
+      if (count >= 5) {
+        return res.status(400).json({ message: 'Maximum 5 featured blogs allowed' });
+      }
+    }
+
     blog.isFeatured = !blog.isFeatured;
     await blog.save();
     res.json(blog);
