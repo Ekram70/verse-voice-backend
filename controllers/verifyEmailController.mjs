@@ -18,8 +18,8 @@ const verifyEmail = async (req, res) => {
       let createOtp = await otpModel.create({ email: email, otp: OtpCode });
       let sendEmail = await sendEmailUtility(
         email,
-        `${htmlEmail(OtpCode)}`,
-        'Classroom Writers OTP Verification'
+        htmlEmail(OtpCode, 'password'),
+        'VerseVoice - Reset Your Password'
       );
 
       res.status(200).json({ status: 'success', data: sendEmail });

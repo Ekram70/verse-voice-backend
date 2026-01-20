@@ -1,24 +1,35 @@
 import nodemailer from 'nodemailer';
 
-const sendEmailUtility = async (EmailTo, EmailText, EmailSub) => {
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
-    secure: false,
+const createTransporter = () => {
+  return nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT),
+    secure: process.env.EMAIL_PORT === '465',
     auth: {
-      user: process.env.FROM_EMAIL,
-      pass: process.env.FROM_EMAIL_PASS,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
+};
 
-  let mailOptions = {
-    from: `Classroom Writers <${process.env.FROM_EMAIL}>`,
-    to: EmailTo,
-    subject: EmailSub,
-    html: EmailText,
-  };
+const sendEmailUtility = async (EmailTo, EmailText, EmailSub) => {
+  try {
+    const transporter = createTransporter();
 
-  return await transporter.sendMail(mailOptions);
+    const mailOptions = {
+      from: `VerseVoice <${process.env.EMAIL_FROM}>`,
+      to: EmailTo,
+      subject: EmailSub,
+      html: EmailText,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('Email error:', error);
+    throw new Error(error.message);
+  }
 };
 
 export default sendEmailUtility;
