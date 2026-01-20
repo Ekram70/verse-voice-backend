@@ -9,6 +9,9 @@ const createBlog = async (req, res) => {
     blogPicUrl,
     name,
     authorImage,
+    authorDetails,
+    timeRead,
+    publishDate,
   } = req.body;
 
   const blog = new Blog({
@@ -21,6 +24,10 @@ const createBlog = async (req, res) => {
       name,
       avatar: authorImage,
     },
+    authorDetails: authorDetails || '',
+    timeRead: timeRead || '3 mins read',
+    publishDate: publishDate || new Date(),
+    submittedBy: req.user.id,
   });
 
   try {

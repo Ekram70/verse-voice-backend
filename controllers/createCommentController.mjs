@@ -11,7 +11,7 @@ const addComment = async (req, res) => {
 
     const comment = new Comment({
       text,
-      createdBy: req.user,
+      createdBy: req.user.id,
       blog: req.params.blogId,
     });
 
