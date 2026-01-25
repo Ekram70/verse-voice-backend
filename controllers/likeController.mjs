@@ -1,6 +1,6 @@
 import Blog from '../models/blogsModel.mjs';
 import Like from '../models/likesModel.mjs';
-
+import { createNotification } from './notificationController.mjs';
 
 const likeBlog = async (req, res) => {
   try {
@@ -9,7 +9,7 @@ const likeBlog = async (req, res) => {
     if (!blog) return res.status(404).json({ message: 'Blog not found' });
 
     const existingLike = await Like.findOne({
-      user: req.user,
+      user: req.user.id,
       blog: req.params.blogId,
     });
 
@@ -18,13 +18,23 @@ const likeBlog = async (req, res) => {
     }
 
     const like = new Like({
-      user: req.user,
+      user: req.user.id,
       blog: req.params.blogId,
     });
 
     await like.save();
     blog.likesCount += 1;
     await blog.save();
+
+    // Create notification for blog owner
+    if (blog.submittedBy) {
+      await createNotification({
+        recipient: blog.submittedBy,
+        type: 'like',
+        actionBy: req.user.id,
+        blog: blog._id,
+      });
+    }
 
     res.status(201).json({ message: 'Blog liked' });
   } catch (err) {

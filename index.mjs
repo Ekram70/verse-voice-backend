@@ -29,6 +29,8 @@ import registerRouter from './routes/registerRoutes.mjs';
 import resetRouter from './routes/resetRoutes.mjs';
 import siteSettingsRouter from './routes/siteSettingsRoutes.mjs';
 import userRouter from './routes/userRoutes.mjs';
+import commentReportRouter from './routes/commentReportRoutes.mjs';
+import notificationRouter from './routes/notificationRoutes.mjs';
 
 const app = express();
 
@@ -73,6 +75,8 @@ app.use('/api/v1/settings', siteSettingsRouter);
 app.use('/api/v1/contact', contactRouter);
 app.use('/api/v1/newsletter', newsletterRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/comment-reports', commentReportRouter);
+app.use('/api/v1/notifications', notificationRouter);
 
 app.get('/', (req, res) => {
   res.json({ text: 'VerseVoice API is running' });

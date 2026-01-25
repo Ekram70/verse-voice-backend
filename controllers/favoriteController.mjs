@@ -1,4 +1,6 @@
 import Favorite from '../models/favoriteModel.mjs';
+import Blog from '../models/blogsModel.mjs';
+import { createNotification } from './notificationController.mjs';
 
 export const addFavorite = async (req, res) => {
   try {
@@ -17,6 +19,18 @@ export const addFavorite = async (req, res) => {
     });
 
     await favorite.save();
+
+    // Create notification for blog owner
+    const blog = await Blog.findById(req.params.blogId);
+    if (blog && blog.submittedBy) {
+      await createNotification({
+        recipient: blog.submittedBy,
+        type: 'like',
+        actionBy: req.user.id,
+        blog: blog._id,
+      });
+    }
+
     res.status(201).json({ message: 'Added to favorites' });
   } catch (err) {
     res.status(500).json({ message: err.message });
