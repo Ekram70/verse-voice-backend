@@ -6,11 +6,8 @@ import authenticateToken from '../middlewares/verifyToken.mjs';
 
 const router = express.Router();
 
-router.route('/comments').post(authenticateToken, addComment);
-
-router
-  .route('/comments')
-  .put(authenticateToken, updateComment)
-  .delete(authenticateToken, deleteComment);
+router.post('/:blogId/comments', authenticateToken, addComment);
+router.put('/comments/:id', authenticateToken, updateComment);
+router.delete('/comments/:id', authenticateToken, deleteComment);
 
 export default router;

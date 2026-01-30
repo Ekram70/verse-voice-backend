@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import BlacklistedToken from '../models/blacklistedTokenModel.mjs';
 
 async function authenticateToken(req, res, next) {
-  const authHeader = req.headers['Authorization'];
+  const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) return res.status(401).json({ status: 'fail' });
@@ -17,7 +17,7 @@ async function authenticateToken(req, res, next) {
       next();
     });
   } catch (error) {
-    res.res.status(500).json({ status: 'fail' });
+    res.status(500).json({ status: 'fail' });
   }
 }
 

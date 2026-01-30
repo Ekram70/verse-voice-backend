@@ -5,10 +5,10 @@ const isSuperUserMiddleware = async (req, res, next) => {
 
   const foundUser = await usersModel.findOne({ email }).exec();
 
-  if (foundUser.isSuperUser) {
+  if (foundUser && foundUser.isSuperUser) {
     next();
   } else {
-    next(new Error('This Opeation is Not Allowed!'));
+    return res.status(403).json({ message: 'This operation is not allowed!' });
   }
 };
 

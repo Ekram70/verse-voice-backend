@@ -1,6 +1,11 @@
 import multer from 'multer';
+import fs from 'fs';
 
 const DIR = './public/';
+
+if (!fs.existsSync(DIR)) {
+  fs.mkdirSync(DIR, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
