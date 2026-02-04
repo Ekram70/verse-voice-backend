@@ -2,6 +2,7 @@ import express from 'express';
 import {
   getSettings,
   updateSettings,
+  uploadAboutImage,
   addCategory,
   updateCategory,
   deleteCategory,
@@ -14,6 +15,13 @@ const router = express.Router();
 
 router.get('/', getSettings);
 router.put('/', authenticateToken, isSuperUserMiddleware, updateSettings);
+router.put(
+  '/about-image',
+  authenticateToken,
+  isSuperUserMiddleware,
+  upload.fields([{ name: 'aboutImage' }]),
+  uploadAboutImage
+);
 router.post(
   '/categories',
   authenticateToken,

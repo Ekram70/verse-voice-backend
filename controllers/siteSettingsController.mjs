@@ -97,6 +97,33 @@ export const updateSettings = async (req, res) => {
   }
 };
 
+// Upload about page image
+export const uploadAboutImage = async (req, res) => {
+  try {
+    let settings = await SiteSettings.findOne();
+    if (!settings) {
+      settings = new SiteSettings({ aboutPage: ABOUT_DEFAULTS });
+    }
+
+    if (!req.files || !req.files['aboutImage']) {
+      return res.status(400).json({ message: 'Image file is required' });
+    }
+
+    const url = req.protocol + '://' + req.get('host');
+    const imageUrl = url + '/' + req.files['aboutImage'][0].filename;
+
+    if (!settings.aboutPage) {
+      settings.aboutPage = { ...ABOUT_DEFAULTS };
+    }
+    settings.aboutPage.imageUrl = imageUrl;
+
+    await settings.save();
+    res.json({ imageUrl });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Add a category (with file upload)
 export const addCategory = async (req, res) => {
   try {
