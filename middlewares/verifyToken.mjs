@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import BlacklistedToken from '../models/blacklistedTokenModel.mjs';
+import User from '../models/usersModel.mjs';
 
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -11,8 +12,13 @@ async function authenticateToken(req, res, next) {
     const blacklisted = await BlacklistedToken.findOne({ token });
     if (blacklisted) return res.sendStatus(403);
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
       if (err) return res.status(403).json({ status: 'fail' });
+
+      const dbUser = await User.findById(user.id).select('isBanned').lean();
+      if (!dbUser) return res.status(401).json({ status: 'fail', message: 'Account no longer exists' });
+      if (dbUser.isBanned) return res.status(403).json({ status: 'fail', message: 'Your account has been banned' });
+
       req.user = user;
       next();
     });
