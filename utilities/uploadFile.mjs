@@ -1,9 +1,12 @@
 import multer from 'multer';
 import fs from 'fs';
 
-const DIR = './public/';
+// Use /tmp for serverless (Vercel), ./public/ for local
+const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
+const DIR = isServerless ? '/tmp/' : './public/';
 
-if (!fs.existsSync(DIR)) {
+// Only create directory if not serverless (Vercel has /tmp ready)
+if (!isServerless && !fs.existsSync(DIR)) {
   fs.mkdirSync(DIR, { recursive: true });
 }
 
