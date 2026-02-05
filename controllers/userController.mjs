@@ -1,4 +1,5 @@
 import User from '../models/usersModel.mjs';
+import getFileUrl from '../utilities/getFileUrl.mjs';
 
 export const getCurrentUser = async (req, res) => {
   try {
@@ -30,8 +31,7 @@ export const updateProfile = async (req, res) => {
 
     // Handle avatar file upload
     if (req.files && req.files['avatar']) {
-      const url = req.protocol + '://' + req.get('host');
-      user.avatar = url + '/' + req.files['avatar'][0].filename;
+      user.avatar = getFileUrl(req, req.files['avatar'][0]);
     }
 
     await user.save();

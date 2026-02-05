@@ -1,5 +1,6 @@
 import SiteSettings from '../models/siteSettingsModel.mjs';
 import Blog from '../models/blogsModel.mjs';
+import getFileUrl from '../utilities/getFileUrl.mjs';
 
 const ABOUT_DEFAULTS = {
   name: 'Fakharuddin Pentu',
@@ -109,8 +110,7 @@ export const uploadAboutImage = async (req, res) => {
       return res.status(400).json({ message: 'Image file is required' });
     }
 
-    const url = req.protocol + '://' + req.get('host');
-    const imageUrl = url + '/' + req.files['aboutImage'][0].filename;
+    const imageUrl = getFileUrl(req, req.files['aboutImage'][0]);
 
     if (!settings.aboutPage) {
       settings.aboutPage = { ...ABOUT_DEFAULTS };
@@ -138,8 +138,7 @@ export const addCategory = async (req, res) => {
     // Build image URL from uploaded file
     let image = '';
     if (req.files && req.files['categoryImage']) {
-      const url = req.protocol + '://' + req.get('host');
-      image = url + '/' + req.files['categoryImage'][0].filename;
+      image = getFileUrl(req, req.files['categoryImage'][0]);
     }
 
     if (!image) return res.status(400).json({ message: 'Category image is required' });
@@ -183,8 +182,7 @@ export const updateCategory = async (req, res) => {
 
     // Update image if a new file was uploaded
     if (req.files && req.files['categoryImage']) {
-      const url = req.protocol + '://' + req.get('host');
-      settings.categories[catIndex].image = url + '/' + req.files['categoryImage'][0].filename;
+      settings.categories[catIndex].image = getFileUrl(req, req.files['categoryImage'][0]);
     }
 
     settings.categories[catIndex].name = newName;
