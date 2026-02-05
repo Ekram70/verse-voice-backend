@@ -111,12 +111,14 @@ export const getFavoritedUsers = async (req, res) => {
       .populate('user', 'name avatar')
       .sort({ createdAt: -1 });
 
-    const users = favorites.map((f) => ({
-      _id: f.user._id,
-      name: f.user.name,
-      avatar: f.user.avatar,
-      favoritedAt: f.createdAt,
-    }));
+    const users = favorites
+      .filter((f) => f.user)
+      .map((f) => ({
+        _id: f.user._id,
+        name: f.user.name,
+        avatar: f.user.avatar,
+        favoritedAt: f.createdAt,
+      }));
 
     res.json(users);
   } catch (err) {

@@ -1,6 +1,11 @@
 import User from '../models/usersModel.mjs';
 import Blog from '../models/blogsModel.mjs';
 import Comment from '../models/commentsModel.mjs';
+import Favorite from '../models/favoriteModel.mjs';
+import Like from '../models/likesModel.mjs';
+import Notification from '../models/notificationModel.mjs';
+import BlogRequest from '../models/blogRequestModel.mjs';
+import CommentReport from '../models/commentReportModel.mjs';
 import sendEmail from '../utilities/sendEmail.mjs';
 
 export const getAllUsers = async (req, res) => {
@@ -90,6 +95,31 @@ export const deleteUser = async (req, res) => {
 
     // Delete user's comments
     await Comment.deleteMany({ createdBy: user._id });
+
+    // Delete user's favorites and update favorite counts
+    await Favorite.deleteMany({ user: user._id });
+
+    // Delete user's likes and decrement likesCount on affected blogs
+    const userLikes = await Like.find({ user: user._id });
+    const likedBlogIds = userLikes.map((l) => l.blog);
+    await Like.deleteMany({ user: user._id });
+    if (likedBlogIds.length > 0) {
+      await Blog.updateMany(
+        { _id: { $in: likedBlogIds } },
+        { $inc: { likesCount: -1 } }
+      );
+    }
+
+    // Delete notifications sent to or triggered by user
+    await Notification.deleteMany({
+      $or: [{ recipient: user._id }, { actionBy: user._id }],
+    });
+
+    // Delete user's blog requests
+    await BlogRequest.deleteMany({ submittedBy: user._id });
+
+    // Delete user's comment reports
+    await CommentReport.deleteMany({ reportedBy: user._id });
 
     // Delete user's blogs
     await Blog.deleteMany({ submittedBy: user._id });
