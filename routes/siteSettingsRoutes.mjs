@@ -3,6 +3,7 @@ import {
   getSettings,
   updateSettings,
   uploadAboutImage,
+  uploadSiteLogo,
   addCategory,
   updateCategory,
   deleteCategory,
@@ -15,6 +16,13 @@ const router = express.Router();
 
 router.get('/', getSettings);
 router.put('/', authenticateToken, isSuperUserMiddleware, updateSettings);
+router.put(
+  '/site-logo',
+  authenticateToken,
+  isSuperUserMiddleware,
+  upload.fields([{ name: 'siteLogo' }]),
+  uploadSiteLogo
+);
 router.put(
   '/about-image',
   authenticateToken,

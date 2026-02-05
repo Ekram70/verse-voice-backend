@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 const siteSettingsSchema = new mongoose.Schema(
   {
+    siteTitle: { type: String, default: 'Class Room Writers' },
+    siteLogo: { type: String, default: '/assets/logo.svg' },
     heroTitle: { type: String, default: 'Thoughts Meet Words' },
     heroSubtitle: {
       type: String,

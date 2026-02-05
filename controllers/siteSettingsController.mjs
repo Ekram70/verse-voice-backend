@@ -43,8 +43,16 @@ export const getSettings = async (req, res) => {
       });
     }
 
-    // Seed aboutPage and contactPage to DB if missing
+    // Seed siteTitle and siteLogo to DB if missing
     let needsSave = false;
+    if (!settings.siteTitle) {
+      settings.siteTitle = 'Class Room Writers';
+      needsSave = true;
+    }
+    if (!settings.siteLogo) {
+      settings.siteLogo = '/assets/logo.svg';
+      needsSave = true;
+    }
     if (!settings.aboutPage || !settings.aboutPage.name) {
       settings.aboutPage = { ...ABOUT_DEFAULTS, ...(settings.aboutPage?.toObject?.() || settings.aboutPage || {}) };
       if (!settings.aboutPage.roles || settings.aboutPage.roles.length === 0) {
@@ -78,8 +86,9 @@ export const updateSettings = async (req, res) => {
       settings = new SiteSettings();
     }
 
-    const { heroTitle, heroSubtitle, footerText, socialLinks, aboutPage, contactPage } = req.body;
+    const { siteTitle, heroTitle, heroSubtitle, footerText, socialLinks, aboutPage, contactPage } = req.body;
 
+    if (siteTitle !== undefined) settings.siteTitle = siteTitle;
     if (heroTitle !== undefined) settings.heroTitle = heroTitle;
     if (heroSubtitle !== undefined) settings.heroSubtitle = heroSubtitle;
     if (footerText !== undefined) settings.footerText = footerText;
@@ -119,6 +128,28 @@ export const uploadAboutImage = async (req, res) => {
 
     await settings.save();
     res.json({ imageUrl });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Upload site logo
+export const uploadSiteLogo = async (req, res) => {
+  try {
+    let settings = await SiteSettings.findOne();
+    if (!settings) {
+      settings = new SiteSettings();
+    }
+
+    if (!req.files || !req.files['siteLogo']) {
+      return res.status(400).json({ message: 'Logo file is required' });
+    }
+
+    const logoUrl = getFileUrl(req, req.files['siteLogo'][0]);
+    settings.siteLogo = logoUrl;
+
+    await settings.save();
+    res.json({ siteLogo: logoUrl });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
