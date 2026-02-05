@@ -102,6 +102,34 @@ async function seed() {
         linkedin: '',
         instagram: '',
       },
+      aboutPage: {
+        name: 'Fakharuddin Pentu',
+        email: 'pintu.eng@gmail.com',
+        imageUrl: '/assets/admin.png',
+        aboutText:
+          "Hey there! I've always imagined how great it would be to have a writing website just for students, and now it's finally a reality!\n\nThis space is all about breaking free from those stiff, boring syllabi. It's your chance to unleash your creativity and let your imagination soar\u2014no idea is too wild! Let's dive into this adventure together!",
+        roles: [
+          { title: 'Current Lecturer', organization: 'Comilla Govt. College, Comilla' },
+          { title: 'Former Lecturer', organization: 'Chauddagram Govt. College, Comilla' },
+          { title: 'Former Assistant Director', organization: 'Anti-Corruption Commission - Bangladesh' },
+        ],
+        socialLinks: { linkedin: '', twitter: '', facebook: '', email: '' },
+      },
+      contactPage: {
+        heading: 'Contact Us',
+        description:
+          "I'd love to hear from you! Whether you have questions, feedback, or want to share your own writing journey, reach out to me. Your thoughts are important, and together we can inspire creativity and connection. Let's build a vibrant community of young writers!",
+        phone1: '+8801675697313',
+        phone2: '+8801912033727',
+        email1: 'pintu.eng@gmail.com',
+        email2: 'classroomwriters@gmail.com',
+        address1: 'Police Line, Adarsha Sadar',
+        address2: 'Cumilla 3500',
+        mapEmbedUrl:
+          'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3659.7776947401735!2d91.1724365!3d23.468481999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37547ed5ea38a001%3A0xa888b09fb49bc32!2sPolice%20Line%2C%20Cumilla!5e0!3m2!1sen!2sbd!4v1728494003876!5m2!1sen!2sbd',
+        formHeading: 'Drop Us a Message',
+        formDescription: 'Your email address will not be published. All the fields are required.',
+      },
     });
     await settings.save();
     console.log(`Created site settings with ${categories.length} categories`);
