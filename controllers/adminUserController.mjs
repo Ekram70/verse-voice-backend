@@ -1,6 +1,7 @@
 import User from '../models/usersModel.mjs';
 import Blog from '../models/blogsModel.mjs';
 import Comment from '../models/commentsModel.mjs';
+import sendEmail from '../utilities/sendEmail.mjs';
 
 export const getAllUsers = async (req, res) => {
   const { page = 1, limit = 10, search = '' } = req.query;
@@ -49,6 +50,13 @@ export const toggleBanUser = async (req, res) => {
     user.isBanned = !user.isBanned;
     await user.save({ validateBeforeSave: false });
 
+    // Send email notification (fire and forget)
+    const subject = user.isBanned ? 'Your VerseVoice account has been banned' : 'Your VerseVoice account has been unbanned';
+    const html = user.isBanned
+      ? `<p>Hi ${user.name},</p><p>Your VerseVoice account has been <strong>banned</strong> due to a violation of our terms of service.</p><p>You will no longer be able to log in or use the platform. If you believe this was a mistake, please contact our support team.</p>`
+      : `<p>Hi ${user.name},</p><p>Your VerseVoice account has been <strong>unbanned</strong>. You can now log in and use the platform again.</p>`;
+    sendEmail(user.email, html, subject).catch(() => {});
+
     res.json({ user: { _id: user._id, isBanned: user.isBanned } });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -66,6 +74,13 @@ export const deleteUser = async (req, res) => {
     if (user.isSuperUser) {
       return res.status(403).json({ message: 'Cannot delete an admin user' });
     }
+
+    // Send deletion email before removing (fire and forget)
+    sendEmail(
+      user.email,
+      `<p>Hi ${user.name},</p><p>Your VerseVoice account and all associated content have been <strong>permanently deleted</strong> by an administrator.</p><p>If you believe this was a mistake, please contact our support team.</p>`,
+      'Your VerseVoice account has been deleted'
+    ).catch(() => {});
 
     // Clean up user's comments from blogs
     await Blog.updateMany(
