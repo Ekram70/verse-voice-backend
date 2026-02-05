@@ -1,10 +1,12 @@
 import Blog from '../models/blogsModel.mjs';
 
 const getBlogs = async (req, res) => {
-  const { page = 1, limit = 10, search = '', sort = 'createdAt', order = 'desc' } = req.query;
+  const { page = 1, limit = 10, search = '', sort = 'createdAt', order = 'desc', category, author } = req.query;
 
   try {
     const filter = search ? { title: new RegExp(search, 'i') } : {};
+    if (category) filter.category = new RegExp(category, 'i');
+    if (author) filter['createdBy.name'] = new RegExp(author, 'i');
     const sortObj = { [sort]: order === 'asc' ? 1 : -1 };
 
     const blogs = await Blog.find(filter)

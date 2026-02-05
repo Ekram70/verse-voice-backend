@@ -1,5 +1,6 @@
 import Blog from '../models/blogsModel.mjs';
 import BlogRequest from '../models/blogRequestModel.mjs';
+import sendNewBlogNotification from '../utilities/sendNewBlogEmail.mjs';
 
 // Client submits a blog request
 export const submitBlogRequest = async (req, res) => {
@@ -72,6 +73,7 @@ export const approveRequest = async (req, res) => {
     });
 
     await blog.save();
+    sendNewBlogNotification(blog);
 
     request.status = 'approved';
     await request.save();
@@ -93,6 +95,25 @@ export const rejectRequest = async (req, res) => {
     await request.save();
 
     res.json({ message: 'Request rejected', request });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Admin edits a request before approving
+export const updateRequest = async (req, res) => {
+  try {
+    const request = await BlogRequest.findById(req.params.id);
+    if (!request) return res.status(404).json({ message: 'Request not found' });
+
+    const { title, content, category, timeRead } = req.body;
+    if (title) request.title = title;
+    if (content) request.content = content;
+    if (category) request.category = category;
+    if (timeRead) request.timeRead = timeRead;
+
+    const updated = await request.save();
+    res.json(updated);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

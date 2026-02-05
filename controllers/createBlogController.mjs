@@ -1,4 +1,5 @@
 import Blog from '../models/blogsModel.mjs';
+import sendNewBlogNotification from '../utilities/sendNewBlogEmail.mjs';
 
 const createBlog = async (req, res) => {
   const {
@@ -32,6 +33,7 @@ const createBlog = async (req, res) => {
 
   try {
     const createdBlog = await blog.save();
+    sendNewBlogNotification(createdBlog);
     res.status(201).json(createdBlog);
   } catch (err) {
     res.status(400).json({ message: err.message });

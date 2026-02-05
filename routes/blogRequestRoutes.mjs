@@ -3,6 +3,7 @@ import {
   submitBlogRequest,
   getAllRequests,
   getMyRequests,
+  updateRequest,
   approveRequest,
   rejectRequest,
   deleteRequest,
@@ -24,6 +25,7 @@ router.post(
 
 router.get('/', authenticateToken, isSuperUserMiddleware, getAllRequests);
 router.get('/my', authenticateToken, getMyRequests);
+router.put('/:id', authenticateToken, isSuperUserMiddleware, updateRequest);
 router.put('/:id/approve', authenticateToken, isSuperUserMiddleware, approveRequest);
 router.put('/:id/reject', authenticateToken, isSuperUserMiddleware, rejectRequest);
 router.delete('/:id', authenticateToken, isSuperUserMiddleware, deleteRequest);
