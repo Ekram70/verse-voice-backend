@@ -45,7 +45,7 @@ app.use(bodyParser.json());
 app.use(limiter);
 app.use(credentials);
 app.use(cors(corsOptions));
-app.use(xss());
+app.use(xss({ allowedKeys: ['siteTitle'] }));
 app.use(hpp());
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
