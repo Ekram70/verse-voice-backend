@@ -6,6 +6,7 @@ const allowedOrigins = [
   'https://verse-voice.vercel.app',
   'https://verse-voice-rizwansuvo99s-projects.vercel.app',
   'https://verse-voice-git-master-rizwansuvo99s-projects.vercel.app',
+  'https://classroomwriters.netlify.app',
 ];
 
 export default allowedOrigins;
