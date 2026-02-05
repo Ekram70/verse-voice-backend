@@ -17,10 +17,14 @@ if (isServerless) {
 
   storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: {
-      folder: 'versevoice',
-      allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-      transformation: [{ width: 1200, height: 800, crop: 'limit' }],
+    params: (req, file) => {
+      const isSvg = file.mimetype === 'image/svg+xml';
+      return {
+        folder: 'versevoice',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
+        resource_type: isSvg ? 'raw' : 'image',
+        transformation: isSvg ? [] : [{ width: 1200, height: 800, crop: 'limit' }],
+      };
     },
   });
 } else {
@@ -49,12 +53,13 @@ const upload = multer({
       file.mimetype == 'image/jpg' ||
       file.mimetype == 'image/jpeg' ||
       file.mimetype == 'image/gif' ||
-      file.mimetype == 'image/webp'
+      file.mimetype == 'image/webp' ||
+      file.mimetype == 'image/svg+xml'
     ) {
       cb(null, true);
     } else {
       cb(null, false);
-      return cb(new Error('Only .png, .jpg, .jpeg, .gif and .webp formats allowed!'));
+      return cb(new Error('Only .png, .jpg, .jpeg, .gif, .webp and .svg formats allowed!'));
     }
   },
 });
