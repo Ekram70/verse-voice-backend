@@ -38,8 +38,8 @@ const app = express();
 dotenv.config();
 
 // parser
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }));
+app.use(bodyParser.json({ limit: '10mb' }));
 
 // security middlewares
 app.use(limiter);
