@@ -8,6 +8,7 @@ import {
   approveRequest,
   rejectRequest,
   deleteRequest,
+  clearAllRequests,
 } from '../controllers/blogRequestController.mjs';
 import authenticateToken from '../middlewares/verifyToken.mjs';
 import isSuperUserMiddleware from '../middlewares/isSuperUser.mjs';
@@ -30,6 +31,7 @@ router.get('/:id', authenticateToken, isSuperUserMiddleware, getRequestById);
 router.put('/:id', authenticateToken, isSuperUserMiddleware, updateRequest);
 router.put('/:id/approve', authenticateToken, isSuperUserMiddleware, approveRequest);
 router.put('/:id/reject', authenticateToken, isSuperUserMiddleware, rejectRequest);
+router.delete('/clear-all', authenticateToken, isSuperUserMiddleware, clearAllRequests);
 router.delete('/:id', authenticateToken, isSuperUserMiddleware, deleteRequest);
 
 export default router;

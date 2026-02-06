@@ -141,3 +141,13 @@ export const deleteRequest = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Admin clears all requests
+export const clearAllRequests = async (req, res) => {
+  try {
+    await BlogRequest.deleteMany({});
+    res.json({ message: 'All requests cleared' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
